@@ -1,39 +1,31 @@
 import java.util.Objects;
 
 public class Item {
+
     private String name;
     private int quantity;
     private String description;
-    private String roomId;
 
-    // Initialization
-    public Item() {
-        this.name = "Unknown";
-        this.quantity = 0;
-        this.description = "No description";
-        this.roomId = "Unknown";
-    }
 
-    public Item(String name, int quantity, String category, String description, String roomId) {
+    public Item (String name, int quantity, String description) {
         setName(name);
         setQuantity(quantity);
         setDescription(description);
-        setRoomId(roomId);
     }
 
-    // Mutators and Accessors
+    // Accessor methods & Mutator methods for Item class fields
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
-            this.name = "Unknown";
-        }   else { 
+            this.name = "Unnamed";
+        }   else {
             this.name = name;
         }
     }
-    
+
     public int getQuantity() {
         return quantity;
     }
@@ -46,7 +38,7 @@ public class Item {
         }
     }
 
-    public String description() {
+    public String getDescription() {
         return description;
     }
 
@@ -57,27 +49,21 @@ public class Item {
             this.description = description;
         }
     }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
-    }
-
-
-    // Additional methods 
-    public void restock(int amount) {
-        this.quantity += amount;
-    }
-
+    @Override 
     public String toString() {
         return "Item{" +
                 "name='" + name + '\'' +
                 ", quantity=" + quantity +
                 ", description='" + description + '\'' +
-                ", roomId='" + roomId + '\'' +
                 '}';
     }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return Objects.equals(name, item.name) &&
+                Objects.equals(description, item.description);
+    }
+
+
 }
