@@ -133,13 +133,26 @@ public class Room {
         }
         if (item == null) {
             System.out.println("Cannot add null item to the room.");
+            return;
         }
         this.items.add(item);
     }
 
     public void printItems() {
-        for (Item c : this.items){
-            System.out.println(c);
+        if (items == null || items.isEmpty()) {
+            System.out.println("No items in this room.");
+            return;
+        }
+
+        System.out.println("Items in " + name + ":");
+        for (Item item : items) {
+            if (item == null) {
+                System.out.println("- [null item]");
+                continue;
+            }
+            System.out.println("- " + item.getName());
+            System.out.println("  Quantity: " + item.getQuantity());
+            System.out.println("  Description: " + item.getDescription());
         }
     }
 
