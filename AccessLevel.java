@@ -1,5 +1,5 @@
 public enum AccessLevel {
     STUDENT,
     FACULTY,
-    ADMINs
+    ADMIN
 }

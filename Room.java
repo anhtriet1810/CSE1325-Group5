@@ -1,5 +1,5 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Room {
     private int roomNumber;
@@ -11,169 +11,102 @@ public class Room {
     private int y_location;
     private List<Item> items;
 
-    // Intializting default room values
-    public Room () {
-        this.roomNumber = 0;
-        this.name = "Unnamed";
-        this.type = "Undefined";
-        this.personCap = 0;
-        this.itemCap = 0;
-        this.x_location = -1;
-        this.y_location = -1;
-        this.items = null;
-    }
-
-    public Room(int roomNumber, String name, String type, int personCap, int itemCap, int x_location, int y_location, List<Item> items) {
-        setRoomNumber(roomNumber);
-        setName(name);
-        setType(type);
-        setPersonCap(personCap);
-        setItemCap(itemCap);
-        setX_location(x_location);
-        setY_location(y_location);
-        setItems(items);
+    public Room(int num, String name, String type, int personCap, int itemCap, int x_location, int y_location) {
+        if (personCap < 0 || itemCap < 0) {
+            throw new IllegalArgumentException("Capacities cannot be negative.");
+        }
+        this.roomNumber = num;
+        this.name = name;
+        this.type = type;
+        this.personCap = personCap;
+        this.itemCap = itemCap;
+        this.x_location = x_location;
+        this.y_location = y_location;
+        this.items = new ArrayList<>();
     }
 
     public int getRoomNumber() {
         return roomNumber;
     }
 
-    public void setRoomNumber(int roomNumber) {
-        if (roomNumber < 0) {
-            this.roomNumber = 0;
-        } else {
-            this.roomNumber = roomNumber;
-        }
+    public int getXLocation() {
+        return x_location;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        if (name == null || name.isEmpty()) {
-            this.name = "Storage";
-        } else {
-            this.name = name;
-        }
-    }
-    
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        if (type == null || type.isEmpty()) {
-            this.type = "Undefined";
-        } else {
-            this.type = type;
-        }
-    }
-
-
-    public int getPersonCap() {
-        return personCap;
-    }
-
-    public void setPersonCap(int personCap) {
-        if (personCap < 0) {
-            this.personCap = 0;
-        } else {
-            this.personCap = personCap;
-        }
+    public int getYLocation() {
+        return y_location;
     }
 
     public int getItemCap() {
         return itemCap;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setPersonCap(int personCap) {
+        this.personCap = personCap;
+    }
+
     public void setItemCap(int itemCap) {
-        if (itemCap < 0) {
-            this.itemCap = 0;
-        } else {
-            this.itemCap = itemCap;
-        }
+        this.itemCap = itemCap;
     }
 
-    public int getX_location() {
-        return x_location;
-    }
-
-    public void setX_location(int x_location) {
-        if (x_location < 0) {
-            this.x_location = 0;
-        } else {
-            this.x_location = x_location;
-        }
-    }
-
-    public int getY_location() {
-        return y_location;
-    }
-
-    public void setY_location(int y_location) {
-        if (y_location < 0) {
-            this.y_location = 0;
-        } else {
-            this.y_location = y_location;
-        }
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
-
-    public void addItem (Item item) {
-        if (this.items == null) {
-            this.items = new ArrayList<>(); 
-        }
-        if (item == null) {
-            System.out.println("Cannot add null item to the room.");
-            return;
-        }
-        this.items.add(item);
-    }
-
-    public void printItems() {
-        if (items == null || items.isEmpty()) {
-            System.out.println("No items in this room.");
-            return;
-        }
-
-        System.out.println("Items in " + name + ":");
+    public int getCurrentItemCount() {
+        int total = 0;
         for (Item item : items) {
-            if (item == null) {
-                System.out.println("- [null item]");
-                continue;
+            total += item.getQuantity();
+        }
+        return total;
+    }
+
+    public void addItem(Item item) {
+        if (getCurrentItemCount() + item.getQuantity() > itemCap) {
+            throw new IllegalStateException("Room item capacity exceeded.");
+        }
+        // Merge quantity if item already exists
+        for (Item existing : items) {
+            if (existing.getName().equalsIgnoreCase(item.getName())) {
+                existing.setQuantity(existing.getQuantity() + item.getQuantity());
+                return;
             }
-            System.out.println("- " + item.getName());
-            System.out.println("  Quantity: " + item.getQuantity());
-            System.out.println("  Description: " + item.getDescription());
         }
+        items.add(item);
     }
 
-    public void removeItem(Item item) {
-        if (this.items == null || item == null) {
-            System.out.println("Cannot remove null item or from an empty list.");
-            return;
-        }
-        this.items.remove(item);
+    public void removeItem(Item i) {
+        items.remove(i);
     }
 
+    public Item removeItem(String itemName, int qty) {
+        for (Item existing : items) {
+            if (existing.getName().equalsIgnoreCase(itemName)) {
+                if (qty <= 0) {
+                    throw new IllegalArgumentException("Quantity must be positive.");
+                }
+                if (qty >= existing.getQuantity()) {
+                    items.remove(existing);
+                    return existing;
+                } else {
+                    existing.setQuantity(existing.getQuantity() - qty);
+                    return new Item(existing.getName(), qty, existing.getDescription());
+                }
+            }
+        }
+        throw new IllegalArgumentException("Item not found in room: " + itemName);
+    }
+
+    public Item[] getItems() {
+        return items.toArray(new Item[0]);
+    }
+
+    @Override
     public String toString() {
-        return "Room{" +
-                "roomNumber=" + roomNumber +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", personCap=" + personCap +
-                ", itemCap=" + itemCap +
-                ", x_location=" + x_location +
-                ", y_location=" + y_location +
-                ", items=" + items +
-                '}';
+        return "Room #" + roomNumber + " (" + name + ", Type: " + type + ") at (" + x_location + "," + y_location + ")";
     }
-}   
+}

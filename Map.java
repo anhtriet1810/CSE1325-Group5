@@ -1,101 +1,42 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Map {
     private String name;
     private int width;
     private int height;
+    private final int MIN_SIZE = 10;
+    private final int MAX_SIZE = 1000;
+    private List<Room> rooms;
 
-    private int MIN_SIZE;
-    private int MAX_SIZE;
-    private List <Room> rooms;
-
-    public Map () {
-        this.name = "Unnamed";
-        this.width = 0;
-        this.height = 0;
-        
-        this.MIN_SIZE = 0;
-        this.MAX_SIZE = 0;
-        this.rooms = null;
-    }
-
-    public Map (String name, int width, int height, int MIN, int MAX, List <Room> rooms) {
-        setName (name);
-        setWidth (width);
-        setHeight (height);
-
-        setMinSize (MIN);
-        setMaxSize (MAX);
-        setRoom (rooms);
-    }
-
-    public String getName () {
-        return this.name;
-    }
-    
-    public void setName (String name) {
-        if (name == null || name.isEmpty()) {
-            this.name = "Unnamed";
-        }   else {
-            this.name = name;
+    public Map(String name, int w, int h) {
+        if (w < MIN_SIZE || w > MAX_SIZE || h < MIN_SIZE || h > MAX_SIZE) {
+            throw new IllegalArgumentException("Map dimensions must be between " + MIN_SIZE + " and " + MAX_SIZE);
         }
-
+        this.name = name;
+        this.width = w;
+        this.height = h;
+        this.rooms = new ArrayList<>();
     }
 
-    public int getWidth () {
-        return this.width;
+    public int getWidth() {
+        return width;
     }
 
-    public void setWidth (int width) {
-        if (width < 0) {
-            this.width = 0;
-        }   else {
-            this.width = width;
-        }
-    }
-    
-    public int getHeight () {
-        return this.height;
+    public int getHeight() {
+        return height;
     }
 
-    public void setHeight (int height) {
-        if (width < 0) {
-            this.height = 0;
-        }   else {
-            this.height = height;
-        }
+    public List<Room> getRoomList() {
+        return rooms;
     }
 
-    public int getMinSize() {
-        return this.MIN_SIZE;
+    public Room[] getRooms() {
+        return rooms.toArray(new Room[0]);
     }
 
-    public void setMinSize (int MINSIZE) {
-        if (MINSIZE < 0) {
-            this.MIN_SIZE = 0;
-        }   else {
-            this.MIN_SIZE = MINSIZE;
-        }
+    @Override
+    public String toString() {
+        return "Map: " + name + " [" + width + "x" + height + "] Rooms: " + rooms.size();
     }
-
-    public int getMaxSize() {
-        return this.MAX_SIZE;
-    }
-
-    public void setMaxSize (int MAXSIZE) {
-        if (MAXSIZE < 0) {
-            this.MAX_SIZE = 0;
-        }   else {
-            this.MAX_SIZE = MAXSIZE;
-        }
-    }
-
-    public List<Room> getRooms() {
-        return this.rooms;
-    }
-
-    public void setRoom(List<Room> rooms) {
-        this.rooms = rooms;
-    }
-
 }
