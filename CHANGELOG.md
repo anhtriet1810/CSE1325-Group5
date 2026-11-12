@@ -6,4 +6,5 @@
     -changed a lot of Exception throwing in Item.java and ItemManager.java to instead print to System.err and set default values since there are no try/catch blocks in the rest of the back end.
     -commented out the import: javax.swing.border.TitledBorder; in MapGUI.java since it is not used
     -merged the Item.java file from GUI code into the back end
+    -reorganized a lot of the file structure and turned most of the code into a package
     
