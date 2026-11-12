@@ -7,4 +7,5 @@
     -commented out the import: javax.swing.border.TitledBorder; in MapGUI.java since it is not used
     -merged the Item.java file from GUI code into the back end
     -reorganized a lot of the file structure and turned most of the code into a package
+    -in many of the frontend files, changed the role related String into an AccessLevel from AccessLevel.java
     
