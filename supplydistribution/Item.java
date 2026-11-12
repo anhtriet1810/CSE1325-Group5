@@ -1,3 +1,4 @@
+package supplydistribution;
 public class Item {
     //fields
     public static final int MAX_NAME = 60;

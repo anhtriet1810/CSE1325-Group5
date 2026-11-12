@@ -1,3 +1,4 @@
+package supplydistribution;
 public class RoomManager {
     private Map map;
 
