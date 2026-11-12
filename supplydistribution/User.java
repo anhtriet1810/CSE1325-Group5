@@ -1,6 +1,8 @@
 package supplydistribution;
 import java.util.Arrays;
 
+/// frontend file
+
 /**
  * Room Supply Distribution System - User
  */

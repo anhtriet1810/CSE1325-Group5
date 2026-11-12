@@ -1,6 +1,8 @@
 package supplydistribution;
 import java.util.ArrayList;
 
+/// backend file
+
 public class ItemManager {
     private ArrayList<Item> items;
 

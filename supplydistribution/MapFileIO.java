@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+/// frontend file
+
 /**
  * Room Supply Distribution System - map file reading and writing.
  */

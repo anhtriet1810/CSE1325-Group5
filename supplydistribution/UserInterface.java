@@ -3,6 +3,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
 
+/// frontend file
+
 /**
  * Room Supply Distribution System - Login and Main Menu window.
  */
