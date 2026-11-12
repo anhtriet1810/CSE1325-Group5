@@ -21,5 +21,8 @@ public class Main {
 
         System.out.println("Lab items after transfer: " + lab.getCurrentItemCount());
         System.out.println("Storage items after transfer: " + storage.getCurrentItemCount());
+
+        //GUI
+        UserInterface.UserInterfaceAppears();
     }
 }

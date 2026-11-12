@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Room {
     private int roomNumber;
@@ -9,7 +8,7 @@ public class Room {
     private int itemCap;
     private int x_location;
     private int y_location;
-    private List<Item> items;
+    private ItemManager itemManager;
 
     public Room(int num, String name, String type, int personCap, int itemCap, int x_location, int y_location) {
         if (personCap < 0 || itemCap < 0) {
@@ -22,11 +21,27 @@ public class Room {
         this.itemCap = itemCap;
         this.x_location = x_location;
         this.y_location = y_location;
-        this.items = new ArrayList<>();
+        this.itemManager = new ItemManager();
     }
 
     public int getRoomNumber() {
         return roomNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public int getPersonCap() {
+        return personCap;
+    }
+
+    public int getItemCap() {
+        return itemCap;
     }
 
     public int getXLocation() {
@@ -37,8 +52,9 @@ public class Room {
         return y_location;
     }
 
-    public int getItemCap() {
-        return itemCap;
+    public ArrayList<Item> getItems()
+    {
+        return itemManager.getItems();
     }
 
     public void setName(String name) {
@@ -59,6 +75,7 @@ public class Room {
 
     public int getCurrentItemCount() {
         int total = 0;
+        ArrayList<Item> items = getItems();
         for (Item item : items) {
             total += item.getQuantity();
         }
@@ -70,6 +87,7 @@ public class Room {
             throw new IllegalStateException("Room item capacity exceeded.");
         }
         // Merge quantity if item already exists
+        ArrayList<Item> items = getItems();
         for (Item existing : items) {
             if (existing.getName().equalsIgnoreCase(item.getName())) {
                 existing.setQuantity(existing.getQuantity() + item.getQuantity());
@@ -80,12 +98,14 @@ public class Room {
     }
 
     public void removeItem(Item i) {
+        ArrayList<Item> items = getItems();
         items.remove(i);
     }
 
     public Item removeItem(String itemName, int qty) {
+        ArrayList<Item> items = getItems();
         for (Item existing : items) {
-            if (existing.getName().equalsIgnoreCase(itemName)) {
+            if (existing.getName().equals(itemName)) {
                 if (qty <= 0) {
                     throw new IllegalArgumentException("Quantity must be positive.");
                 }
@@ -99,10 +119,6 @@ public class Room {
             }
         }
         throw new IllegalArgumentException("Item not found in room: " + itemName);
-    }
-
-    public Item[] getItems() {
-        return items.toArray(new Item[0]);
     }
 
     @Override
