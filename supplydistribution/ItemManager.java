@@ -11,24 +11,21 @@ public class ItemManager {
         items = new ArrayList<Item>();
     }
 
-    //adds an Item to the Item arrayList.
+    /**
+     * Adds an item to the list. If an item with the same name already exists
+     * (case-insensitive), quantities are merged instead of replacing the entry.
+     */
     public void addItem(Item item)
     {
-        //if duplicate, simply add a quantity to that item
-        boolean duplicate = false;
-        for(Item i : items)
+        for (Item i : items)
         {
-            if(item.equals(i))
+            if (i.getName().equalsIgnoreCase(item.getName()))
             {
-                editItem(i, i.getName(), i.getQuantity(), i.getDescription()); //you left off here
-                duplicate = true;
+                i.setQuantity(i.getQuantity() + item.getQuantity());
+                return;
             }
         }
-
-        if(!duplicate)
-        {
-            items.add(item);
-        }
+        items.add(item);
     }
 
     //creates a new Item object, does not add it to the Item arrayList.

@@ -105,10 +105,11 @@ public class Room {
         items.remove(i);
     }
 
+    /** Removes qty units of the named item; name match is case-insensitive (same as GUI). */
     public Item removeItem(String itemName, int qty) {
         ArrayList<Item> items = getItems();
         for (Item existing : items) {
-            if (existing.getName().equals(itemName)) {
+            if (existing.getName().equalsIgnoreCase(itemName)) {
                 if (qty <= 0) {
                     throw new IllegalArgumentException("Quantity must be positive.");
                 }
